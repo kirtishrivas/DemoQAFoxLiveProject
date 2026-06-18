@@ -1,5 +1,7 @@
 package com.tutorialsninja.automation.base;
 
+
+import io.cucumber.java.Scenario;
 import org.openqa.selenium.WebDriver;
 
 import com.tutorialsninja.automation.config.ConfigurationReader;
@@ -10,9 +12,7 @@ import com.tutorialsninja.automation.util.PathHelper;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
+
 
 public class Base {
 	
@@ -24,25 +24,29 @@ public class Base {
 	
 	
 	
-	
-	@Before
-	public void setUp(Scenario scenario){
+	//@Before
+	public  static void setUp(Scenario scenario){
 		log.info("Scenario Started: "+scenario.getName());
 		PropertyConfigurator.configure(PathHelper.getResourcePath("/src/main/resources/ConfigurationFile/log4j.properties"));
 		reader=new PropertyFileReader();
+		 System.out.println("Reader object: " + reader);
+		    System.out.println("Browser value: " + reader.getBrowser());
+
 		Browser.startBrowser();
 		Browser.maximize();
 	}
 	
-	@After
-	public void closeBrowser(Scenario scenario){
+	//@After
+	public static void closeBrowser(Scenario scenario){
 		if(scenario.isFailed()){
-			scenario.embed(Browser.takeScreenshot(), "image/png");
+			scenario.attach(Browser.takeScreenshot(), "image/png", "Failed Scenario");
 		}
 		log.info("Scenario Completed: "+scenario.getName());
 		log.info("Scenario Status is: "+scenario.getStatus());
 		Base.driver.quit();
 		}
+	
+	
 	}
 
 

@@ -1,37 +1,50 @@
 package com.tutorialsninja.automation.config;
 
-
-import java.io.IOException;
+import java.io.FileInputStream;
 import java.util.Properties;
 
-import com.tutorialsninja.automation.util.PathHelper;
+public class PropertyFileReader implements ConfigurationReader {
 
+    Properties prop;
 
+    public PropertyFileReader() {
+        try {
+            prop = new Properties();   // ✅ MUST INITIALIZE
 
-public class PropertyFileReader implements ConfigurationReader{
-	
-	Properties properties=null;
-	
-	public PropertyFileReader() {
-		properties=new Properties();
-		try {
-			properties.load(PathHelper.getInputStreamResourcePath("/src/main/resources/ConfigurationFile/config.properties"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+            //  UPDATED LINE (Correct path):
+            FileInputStream fis = new FileInputStream(
+                System.getProperty("user.dir") + "/src/main/resources/ConfigurationFile/config.properties"
+            );
 
-	public String getUrl() {
-		return properties.getProperty("url");
-	}
+            prop.load(fis);  // ✅ LOAD FILE
 
-	public String getBrowser() {
-		return properties.getProperty("browser");
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	public int getPageLoadTimeOut() {
-		return Integer.parseInt(properties.getProperty("PageLoadTimeOut"));
-	}
+    public String getBrowser() {
+        return prop.getProperty("browser");
+    }
 
-	
-	}
+    @Override
+    public String getUrl() {
+        return prop.getProperty("url");
+    }
+
+    // 🌟 ADD THIS METHOD
+    public String getUsername() {
+        return prop.getProperty("username"); // Make sure 'username' matches the key name in config.properties
+    }
+
+    // 🌟 ADD THIS METHOD
+    public String getPassword() {
+        return prop.getProperty("password"); // Make sure 'password' matches the key name in config.properties
+    }
+
+    @Override
+    public int getPageLoadTimeOut() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+}
