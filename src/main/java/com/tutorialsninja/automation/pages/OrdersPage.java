@@ -28,4 +28,7 @@ public class OrdersPage {
 
 	@FindBy(xpath = "//h1[text()='Your Order Has Been Processed!']")
 	public WebElement successOrderHeader;
+	
+	@FindBy(xpath = "//input[@id='button-payment-address'] | //button[@id='button-payment-address']")
+	public WebElement continueBillingAddressButton;
 }

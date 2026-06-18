@@ -53,22 +53,28 @@ public class Orders {
 
 	@And("I place an order")
 	public void i_place_an_order() throws InterruptedException {
-		Thread.sleep(3000); 
-		ordersPage = new OrdersPage(Base.driver);
-		
-		Elements.click(ordersPage.continueShippingAddressButton);
-		Thread.sleep(2000); 
-		
-		Elements.click(ordersPage.continueShippingMethodButton);
-		Thread.sleep(2000);
-		
-		Elements.click(ordersPage.termsCheckbox);
-		Elements.click(ordersPage.continuePaymentMethodButton);
-		Thread.sleep(2000);
-		
-		Elements.click(ordersPage.confirmOrderButton);
-		Thread.sleep(4000);
+	    Thread.sleep(3000); 
+	    ordersPage = new OrdersPage(Base.driver);
+	    
+	    // 🌟 ADD THIS STEP: Click the Continue button on the Billing Details section first!
+	    Elements.click(ordersPage.continueBillingAddressButton); 
+	    Thread.sleep(2000); // Give the accordion time to slide open
+	    
+	    // Now the Shipping Address section is visible, and this click will work perfectly!
+	    Elements.click(ordersPage.continueShippingAddressButton);
+	    Thread.sleep(2000); 
+	    
+	    Elements.click(ordersPage.continueShippingMethodButton);
+	    Thread.sleep(2000);
+	    
+	    Elements.click(ordersPage.termsCheckbox);
+	    Elements.click(ordersPage.continuePaymentMethodButton);
+	    Thread.sleep(2000);
+	    
+	    Elements.click(ordersPage.confirmOrderButton);
+	    Thread.sleep(4000);
 	}
+	
 
 	@Then("I should see that the order is placed successfully")
 	public void i_should_see_that_the_order_is_placed_successfully() {
